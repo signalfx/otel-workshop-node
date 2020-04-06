@@ -17,7 +17,7 @@ app.get('/', async (req, res) => {
   tracer.withSpan(span, () => {
     axios.get(process.env.JAVA_ENDPOINT)
     .then(response => {
-      res.status(201).send("hello from node<br>" + response)
+      res.status(201).send("hello from node<br>" + response.data)
       span.end()
     })
     .catch(err => {
