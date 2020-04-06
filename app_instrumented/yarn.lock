@@ -78,6 +78,16 @@
     "@opentelemetry/resources" "^0.6.0"
     "@opentelemetry/tracing" "^0.6.0"
 
+"@opentelemetry/metrics@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@opentelemetry/metrics/-/metrics-0.6.0.tgz#450327e9c9f8521cf181f153c1680b4adf3405ab"
+  integrity sha512-tEcjWBvB3sc0GxhgDFqaMnMzKTYwseLqvYjl8F/OP6YEQHNS//VzSpXR9rldfzw+GFA4urAo7F1cu25X5CRStg==
+  dependencies:
+    "@opentelemetry/api" "^0.6.0"
+    "@opentelemetry/base" "^0.6.0"
+    "@opentelemetry/core" "^0.6.0"
+    "@opentelemetry/resources" "^0.6.0"
+
 "@opentelemetry/node@^0.6.0":
   version "0.6.0"
   resolved "https://registry.yarnpkg.com/@opentelemetry/node/-/node-0.6.0.tgz#befa5f55e455e12582cfb9703df5f6c68d51aad7"

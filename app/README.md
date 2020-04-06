@@ -38,12 +38,30 @@ Your task is to instrument this application using [OpenTelemetry
 JavaScript](https://github.com/open-telemetry/opentelemetry-js). If you get
 stuck, check out the `app_instrumented` directory.
 
-### 1. Install OpenTelemetry packages
+### 1. Add OpenTelemetry packages
 
 ```bash
-yarn add @opentelemetry/api @opentelemetry/node \
-    @opentelemetry/tracing @opentelemetry/exporter-collector
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
++    "@opentelemetry/api": "^0.6.0",
++    "@opentelemetry/exporter-collector": "^0.6.0",
++    "@opentelemetry/exporter-zipkin": "^0.6.0",
++    "@opentelemetry/metrics": "^0.6.0",
++    "@opentelemetry/node": "^0.6.0",
++    "@opentelemetry/plugin-express": "^0.5.2",
++    "@opentelemetry/plugin-http": "^0.5.2",
++    "@opentelemetry/plugin-https": "^0.5.2",
++    "@opentelemetry/tracing": "^0.6.0",
+    "axios": "^0.19.2",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1"
+  }
+}
 ```
+
+Run `yarn` or `npm install` to install the dependencies when running locally. Glitch automates this step.
 
 ### 2. Configure the tracer in a new tracer.js file
 
