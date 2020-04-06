@@ -42,7 +42,8 @@ stuck, check out the `app_instrumented` directory.
 
 ```bash
 yarn add @opentelemetry/api @opentelemetry/node \
-    @opentelemetry/tracing @opentelemetry/exporter-collector
+    @opentelemetry/tracing @opentelemetry/exporter-collector \
+    @opentelemetry/metrics
 ```
 
 ### 2. Configure the tracer in a new tracer.js file
@@ -98,7 +99,30 @@ SPAN_EXPORTER_ENDPOINT=/api/v2/spans
 SPAN_EXPORTER_PROTOCOL=https
 ```
 
-### 3. Import the tracer from tracer.js
+
+### 3. Configure metrics in a new metrics.js file
+
+```js
+'use strict';
+
+const { MeterProvider }  = require('@opentelemetry/metrics');
+const { ConsoleMetricExporter }  = require('@opentelemetry/metrics');
+
+// Add your port and startServer to the Prometheus options
+const options = {port: 9464, startServer: true};
+const exporter = new ConsoleMetricExporter(options);
+
+module.exports = (meterName) => {
+
+  // Register the exporter
+  return new MeterProvider({
+    exporter,
+    interval: 1000,
+  }).getMeter(meterName);
+};
+```
+
+### 4. Import the tracer and meter
 
 `index.js`
 
@@ -107,6 +131,7 @@ SPAN_EXPORTER_PROTOCOL=https
 
 +// import tracer before importing express and axios
 +const tracer = require('./tracer')('node-service');
++const meter = require('./metrics')('node-service')
 +
 const express = require('express');
 const axios = require('axios').default;
@@ -114,7 +139,27 @@ const axios = require('axios').default;
 const app = express();
 ```
 
-#### 4. Wrap the fetch operation in a custom span
+#### 5. Create a counter metric and increment it on every incoming request
+
+```diff
+const express = require('express');
+const axios = require('axios').default;
+
+const app = express();
+
++ const counter = meter.createCounter('requests_count');
+
+app.use(express.json());
+
+app.get('/', async (req, res) => {
++  counter.add(1, { path: req.path });
+  axios.get(process.env.JAVA_ENDPOINT)
+  .then(response => {
+    res.status(201).send("hello from node<br>" + response.data)
+  })
+```
+
+#### 6. Wrap the fetch operation in a custom span
 
 ```diff
 app.use(express.json());
